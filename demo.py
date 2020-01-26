@@ -100,7 +100,7 @@ def preprocess_image(img_path, json_path=None):
 
     return crop, proc_param, img
 
-def main(img_path, write=False, json_path=None):
+def main(img_path,json_path=None):
     sess = tf.Session()
     model = RunModel(config, sess=sess)
 
@@ -118,7 +118,7 @@ def main(img_path, write=False, json_path=None):
     joints, verts, cams, joints3d, theta = model.predict(
         input_img, get_theta=True)
 
-    if write:
+    if True:
         visualize(img, proc_param, joints[0], verts[0], cams[0], img_path[:-4])
 
     np.savetxt('exp/theta/theta'+img_path[:-4]+'.csv',theta[0],delimiter=',')
@@ -133,4 +133,4 @@ if __name__ == '__main__':
     config.load_path = src.config.PRETRAINED_MODEL
     config.batch_size = 1
     renderer = vis_util.SMPLRenderer(face_path=config.smpl_face_path)
-    main(config.img_path,False,config.json_path)
+    main(config.img_path,config.json_path)

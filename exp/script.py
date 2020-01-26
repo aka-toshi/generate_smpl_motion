@@ -77,8 +77,7 @@ def bonepos(vpos,frame):
     joint = np.reshape(joint,[18,3])
     joint = joint[:,lst0]*lst1
     #jointの拡大ver1
-    mug = 0.001
-    joint = joint*mug
+    mug = 0.0010
 #    #jointの拡大ver2
 #    X = joint[2]-joint[5]
 #    lenx = np.linalg.norm(X, ord=2)
@@ -86,7 +85,7 @@ def bonepos(vpos,frame):
 #    leny = np.linalg.norm(Y, ord=2)
 #    mug = leny/lenx
 #    print('MAGNIFICATION IS :',mug)
-#    joint = joint*mug
+    joint = joint*mug
     #鼻の位置合わせ
     nosediff = joint[0] - amt.pose.bones[0].head[:]
     joint = joint - nosediff
@@ -169,7 +168,7 @@ def main(obj_file):
         j.select = True
     i =0
     bonepos(vpos,1000+10*i)
-    bpy.context.scene.frame_set(i*10)
+#    bpy.context.scene.frame_set(i*10)
 #    bpy.ops.anim.keyframe_insert_menu(type = 'BUILTIN_KSI_VisualLocRotScale')
 #    bonepos(vpos,1000+10*i)
 #    bpy.ops.anim.keyframe_insert_menu(type = 'BUILTIN_KSI_LocRot')

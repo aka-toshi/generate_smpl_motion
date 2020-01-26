@@ -77,16 +77,16 @@ def bonepos(vpos,frame):
     joint = np.reshape(joint,[18,3])
     joint = joint[:,lst0]*lst1
     #jointの拡大ver1
-    mug = 0.001
-    joint = joint*mug
-#    #jointの拡大ver2
-#    X = joint[2]-joint[5]
-#    lenx = np.linalg.norm(X, ord=2)
-#    Y = np.array(amt.pose.bones[1+bonenum].head[:])-np.array(amt.pose.bones[4+bonenum].head[:])
-#    leny = np.linalg.norm(Y, ord=2)
-#    mug = leny/lenx
-#    print('MAGNIFICATION IS :',mug)
+#    mug = 0.001
 #    joint = joint*mug
+#    #jointの拡大ver2
+    X = joint[2]-joint[5]
+    lenx = np.linalg.norm(X, ord=2)
+    Y = np.array(amt.pose.bones[1+bonenum].head[:])-np.array(amt.pose.bones[4+bonenum].head[:])
+    leny = np.linalg.norm(Y, ord=2)
+    mug = leny/lenx
+    print('MAGNIFICATION IS :',mug)
+    joint = joint*mug
     #鼻の位置合わせ
     nosediff = joint[0] - amt.pose.bones[0].head[:]
     joint = joint - nosediff
@@ -129,13 +129,6 @@ def a():
         bpy.ops.anim.keyframe_insert_menu(type = 'BUILTIN_KSI_LocRot')
         bonepos(vpos,1000+i*10)
     return vpos
-def b():
-    name = 'model1'
-    vpos = readtrc(name)
-    for i in range(10):
-        bonepos(vpos,1010+i*10)
-        time.sleep(0.5)
-
 
 def main(obj_file):
     name = obj_file[:-4]
@@ -144,8 +137,6 @@ def main(obj_file):
     bpy.ops.import_scene.obj(filepath=obj_file)
     #これで骨格を表示
     rigging(name)
-
-    return
 
     ##骨格とモデルを貼り付け
     bpy.ops.object.mode_set(mode='OBJECT')
@@ -157,11 +148,11 @@ def main(obj_file):
     #vpos.shape = (frame,55)  (55=(time,x0,y0,z0,....,z17))
     vpos = readtrc(name)
     #フレームに合わせてポーズを変更
-    for i in range(10):
-        frame = 1000+i*10
-        bonepos(vpos,frame)
-        save_obj(name+'frame{:04d}'.format(frame+1))
-        bonepos(vpos,frame)
+#    for i in range(10):
+#        frame = 1000+i*10
+#        bonepos(vpos,frame)
+#        save_obj(name+'frame{:04d}'.format(frame+1))
+#        bonepos(vpos,frame)
 
 #    bpy.ops.object.mode_set(mode='POSE')
 #    unselect()

@@ -2,7 +2,8 @@
  2次元直立画像からベースモデルを作り，MoCap似合うように変形する
 
 ```
-./data/~~.jpg
+$conda activate py27
+./exp/imagedata/~~.png
 $make 0=~~
 $cd exp
 ./objdata/~~~.obj
