@@ -14,6 +14,25 @@ from ikbone import *
 #from ikstretchbone import *
 
 
+def bonelen(joint):
+    #配列作り
+    a = np.arange(17)
+    a[4] = 1
+    a[7] = 1
+    a[10] = 1
+    a[13] = 0
+    a[14] = 0
+    a[-2:] -=1
+    c = np.zeros(17*3,dtype='int32')
+    c[::3] = a*3
+    c[1::3] =a*3+1
+    c[2::3] =a*3+2
+    jointbox = (joint[1*3:]-joint[c])**2
+    jointbox = np.reshape(jointbox,(17,3))
+    jointlen = np.sum(jointbox,axis=1)**0.5
+    return jointlen
+
+
 def delete_all():
     for i in bpy.data.objects:
         print("removeing objects", i)
@@ -50,7 +69,7 @@ def readtrc(name):
     b = a.values
     return b[:,:-1]
 
-def bonepos(vpos,frame):
+def bonepos(vpos,frame,name):
     bpy.ops.object.mode_set(mode='POSE')
     #骨格の取得
     amt = bpy.context.object
@@ -63,16 +82,34 @@ def bonepos(vpos,frame):
     joint = vpos[frame,1:].copy()
     joint = np.reshape(joint,[18,3])
     joint = joint[:,lst0]*lst1
+######################################################################################
+#jointの拡大設定
     #jointの拡大ver1
 #    mug = 0.001
 #    joint = joint*mug
 #    #jointの拡大ver2
-    X = joint[2]-joint[5]
-    lenx = np.linalg.norm(X, ord=2)
-    Y = np.array(amt.pose.bones[1+bonenum].head[:])-np.array(amt.pose.bones[4+bonenum].head[:])
-    leny = np.linalg.norm(Y, ord=2)
-    mug = leny/lenx
+#    X = joint[2]-joint[5]
+#    lenx = np.linalg.norm(X, ord=2)
+#    Y = np.array(amt.pose.bones[1+bonenum].head[:])-np.array(amt.pose.bones[4+bonenum].head[:])
+#    leny = np.linalg.norm(Y, ord=2)
+#    mug = leny/lenx
+#    print('MAGNIFICATION IS :',mug)
+#    joint = joint*mug
+    #jointの拡大ver2
+    trc = np.loadtxt("trc/bonelength{}.csv".format(name[-1]),delimiter=',')
+    #頭を除いた骨の数
+    length = trc[frame,:13]
+    print("BONE NUM IS(=13)=->>>>>>>>>>>",bonenum)
+    print("BONE LENGTH SHAPE(=13)->>>>> ",np.shape(length))
+#事前に作ったモデルのボーンの位置の配列
+    jointpoint = np.zeros((18,3))
+    jointpoint[0] = amt.pose.bones[0].head[:]
+    for i in range(bonenum):
+        jointpoint[i+1] =  amt.pose.bones[i+bonenum].head[:]
+    lengthy = bonelen(jointpoint.flatten())[:13]
+    mug = np.mean(lengthy/length)
     print('MAGNIFICATION IS :',mug)
+######################################################################################
     joint = joint*mug
     #鼻の位置合わせ
     nosediff = joint[0] - amt.pose.bones[0].head[:]
@@ -108,11 +145,11 @@ def main(obj_file,sframe,num):
     #フレームに合わせてポーズを変更
     for i in range(num):
         frame = sframe+i*10
-        bonepos(vpos,frame)
+        bonepos(vpos,frame,name)
         save_obj(name+'frame{:04d}'.format(frame+1))
 #元に戻す
-        bonepos(vpos,frame)
-    bonepos(vpos,frame)
+        bonepos(vpos,frame,name)
+    bonepos(vpos,frame,name)
 
 #    bpy.ops.object.mode_set(mode='POSE')
 #    unselect()
