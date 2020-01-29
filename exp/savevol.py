@@ -94,6 +94,7 @@ def solve_vol(name,frame):
     bpy.ops.mesh.print3d_info_volume()
     vol = np.loadtxt("meshvol.csv",delimiter=',')
     vol = np.array([vol])
+#np.savetxt("meshvol/"+name+"meshvolframe{:04d}.csv".format(frame+1),vol,delimiter=',')
     np.savetxt("meshvol/"+name+"meshvolframe{:04d}".format(frame+1),vol,delimiter=',')
     print('finish save:',name,frame)
 
