@@ -29,7 +29,7 @@ def rigging(name):
     b00 = amt.data.edit_bones.new('nose')
     b00.head = joint[0]
     b00.tail = joint[1]
-    
+
     #親子関係の設定
     b01 = amt.data.edit_bones.new('shouldR')
     b01.head = b00.tail
@@ -38,11 +38,11 @@ def rigging(name):
     b02 = amt.data.edit_bones.new('elbowR')
     b02.head = b01.tail
     b02.tail = joint[3]
-    
+
     b03 = amt.data.edit_bones.new('wristR')
     b03.head = b02.tail
     b03.tail = joint[4]
-    
+
     b04 = amt.data.edit_bones.new('shouldL')
     b04.head = b00.tail
     b04.tail = joint[5]
@@ -50,7 +50,7 @@ def rigging(name):
     b05 = amt.data.edit_bones.new('elbowL')
     b05.head = b04.tail
     b05.tail = joint[6]
-    
+
     b06 = amt.data.edit_bones.new('wristL')
     b06.head = b05.tail
     b06.tail = joint[7]
@@ -125,7 +125,7 @@ def rigging(name):
     bv02.head = b02.tail
     bv02.tail = b02.tail+bpos
     bv02.use_deform = False
-    
+
     bv03 = amt.data.edit_bones.new('VwristR')
     bv03.head = b03.tail
     bv03.tail = b03.tail+bpos
@@ -140,7 +140,7 @@ def rigging(name):
     bv05.head = b05.tail
     bv05.tail = b05.tail+bpos
     bv05.use_deform = False
-    
+
     bv06 = amt.data.edit_bones.new('VwristL')
     bv06.head = b06.tail
     bv06.tail = b06.tail+bpos
@@ -214,10 +214,15 @@ def rigging(name):
         b14.use_connect = True
         b15.use_connect = True
         b16.use_connect = True
-    
+
     #骨の数
     bonenum = int(len(amt.data.edit_bones)/2)
     ##################ここまで仮想ボーン#######################
+#virtualboneの表示について
+    for i in range(bonenum):
+        exec("bv%02d.layers[1] = True"%(i))
+        exec("bv%02d.layers[0] = False"%(i))
+
 
     ##ボーンコンストレイントを付与
     bpy.ops.object.mode_set(mode='POSE')
@@ -231,10 +236,6 @@ def rigging(name):
 #    bpy.data.armatures[0].layers[1] = True
 #    bpy.data.armatures[0].layers[0] = False
     bpy.context.object.data.display_type = 'STICK'
-#virtualboneについて
-#    for i in range(bonenum):
-#        exec("bv%02d.layers[1] = True"%(i))
-#        exec("bv%02d.layers[0] = False"%(i))
 
     print("FINISH MAKE ARMATURE bone num is :",bonenum)
 

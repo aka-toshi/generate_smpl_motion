@@ -78,13 +78,6 @@ def bonepos(vpos,frame):
     joint = joint[:,lst0]*lst1
     #jointの拡大ver1
     mug = 0.0010
-#    #jointの拡大ver2
-#    X = joint[2]-joint[5]
-#    lenx = np.linalg.norm(X, ord=2)
-#    Y = np.array(amt.pose.bones[1+bonenum].head[:])-np.array(amt.pose.bones[4+bonenum].head[:])
-#    leny = np.linalg.norm(Y, ord=2)
-#    mug = leny/lenx
-#    print('MAGNIFICATION IS :',mug)
     joint = joint*mug
     #鼻の位置合わせ
     nosediff = joint[0] - amt.pose.bones[0].head[:]
@@ -96,7 +89,8 @@ def bonepos(vpos,frame):
     for i in range(bonenum):
         posdiff = joint[i+1]-amt.pose.bones[i+bonenum].head[:]
         posdiff = posdiff[lst2]*lst3
-        bpy.data.objects[amt.name].pose.bones[i+bonenum].location = posdiff
+        bone = bpy.data.objects[amt.name].pose.bones[i+bonenum]
+        bone.location = posdiff
     #スティック表示
     bpy.context.object.data.display_type = 'STICK'
 
@@ -149,6 +143,58 @@ def ani(vpos,i):
         j.select = True
     bpy.context.scene.frame_set(i*5)
     bpy.ops.anim.keyframe_insert_menu(type = 'BUILTIN_KSI_LocRot')
+
+
+
+def sampleani1(i):
+    bpy.ops.object.mode_set(mode='POSE')
+    amt = bpy.context.object
+    bone = bpy.data.objects[amt.name].pose.bones['VwristL']
+#    bone.location[2] += 0.05
+    bone.location[2] = 0.05*i
+    bone.keyframe_insert('location', frame=i*5)
+
+def sampleani(vpos,frame,num):
+#    bpy.ops.object.mode_set(mode='POSE')
+#    amt = bpy.context.object
+#    for j in range
+#    bone = bpy.data.objects[amt.name].pose.bones['VwristL']
+##    bone.location[2] += 0.05
+#    bone.location[2] = 0.05*i
+#    bone.keyframe_insert('location', frame=i*5)
+#    #スティック表示
+#
+    bpy.ops.object.mode_set(mode='POSE')
+    #骨格の取得
+    amt = bpy.context.object
+    #骨の数
+    bonenum = int(len(amt.pose.bones)/2)
+    #jointの回転
+    lst0 = [1,0,2]
+    lst1 = [1,1,-1]
+    joint = vpos[frame,1:].copy()
+    joint = np.reshape(joint,[18,3])
+    joint = joint[:,lst0]*lst1
+    #jointの拡大ver1
+    mug = 0.0010
+    joint = joint*mug
+    #鼻の位置合わせ
+    nosediff = joint[0] - amt.pose.bones[0].head[:]
+    joint = joint - nosediff
+    #posediff回転用
+    lst2 = [0,2,1]
+    lst3 = [1,-1,1]
+    #実際に骨を動かす
+    for i in range(bonenum):
+        posdiff = joint[i+1]-amt.pose.bones[i+bonenum].head[:]
+        posdiff = posdiff[lst2]*lst3
+        bone = bpy.data.objects[amt.name].pose.bones[i+bonenum]
+        bone.location = posdiff
+        bone.keyframe_insert('location', frame=num)
+        bone.location = (0,0,0)
+    #スティック表示
+    
+
     
 def main(obj_file):
     name = obj_file[:-4]
@@ -156,22 +202,27 @@ def main(obj_file):
     #trcファイルから関節位置を取り込む
     #vpos.shape = (frame,55)  (55=(time,x0,y0,z0,....,z17))
     vpos = readtrc(name)
-    
 
-
-
+    bpy.context.object.data.display_type = 'STICK'
     bpy.ops.object.mode_set(mode='POSE')
     amt = bpy.data.objects[1]
-    unselect()
-    for j in amt.data.bones:
-        print(j)
-        j.select = True
-    i =0
-    bonepos(vpos,1000+10*i)
+
+
+    for i in range(100):
+        sampleani(vpos,1000+10*i,i*10)
+#        unselect()
+#        for j in amt.data.bones:
+#            print(j)
+#            j.select = True
+#        sampleani(i)
+#    sampleani(0)
+       
+#    bonepos(vpos,1000+10*i)
 #    bpy.context.scene.frame_set(i*10)
 #    bpy.ops.anim.keyframe_insert_menu(type = 'BUILTIN_KSI_VisualLocRotScale')
 #    bonepos(vpos,1000+10*i)
 #    bpy.ops.anim.keyframe_insert_menu(type = 'BUILTIN_KSI_LocRot')
+
 
 
 
