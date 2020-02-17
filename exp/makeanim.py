@@ -278,7 +278,7 @@ def main(obj_file,sframe,num):
     scene.render.ffmpeg.format = 'MPEG4'
     scene.render.fps = 60
 
-##アニメーション保存
+##save animation(rendering)
 #    bpy.context.scene.camera = bpy.data.objects['Camera']
 #    bpy.ops.render.render(animation=True)
 
