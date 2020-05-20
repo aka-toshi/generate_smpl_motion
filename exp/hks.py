@@ -190,7 +190,8 @@ def getcoloroff(inputfile, output, t=10, save = True, neigvecs=200, option = Tru
     hks = getHKS(VPos, ITris, neigvecs, np.array([t]))
     ris = ITris.flatten()
     if option:
-        lst = [0,13,49,100]
+#        lst = [0,13,49,100]
+        lst = [0,8,20,30,80,100]
 #これがいい感じの位置
 #        lst = [0,3,8,38,70,80,100]
 #        lst = [0,3,8,38,70,80,100]
