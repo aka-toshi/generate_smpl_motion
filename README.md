@@ -3,7 +3,7 @@
 - メッシュモデルを変形させる概要図
 ![](image/hmr.png)
 - 実際の動画
-![](https://youtu.be/ulJ-CM5iCAs)
+![demoless](https://user-images.githubusercontent.com/44262677/83038767-4dccab80-a078-11ea-9daf-082ead3c902e.gif)
 
 ## ファイル構造について
 - . &nbsp; ：[HMR](https://github.com/akanazawa/hmr)関連のファイルが入っている（詳しくはREADME2.md）
