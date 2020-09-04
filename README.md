@@ -31,7 +31,12 @@
   - .ikstretchbone.py armatureの関節の設定がik+stretch（makeanim.pyで呼び出す用）
   - .blender-memo.py：メモ書き
 
-## make SMPL model from image
+## step
+1. make the SMPL model (*.ob) from image 
+2. Move the SMPL 3D mesh we just created based on the time series data of the joints(*.trc).
+
+***Note that the different versions of the python used in Step 1(python2) and Step 2(python3)***
+## make SMPL model from image (step1)
 code from [HMR](https://github.com/akanazawa/hmr)   
 imagefolder is in `./exp/imagedata/example.png`   
 run with **python2**(read [HMR](https://github.com/akanazawa/hmr) settings)
@@ -41,9 +46,10 @@ $make 0=example
 ```
 result SMPL data is in `./exp/objdata/example.obj`
 
-## make SMPL motions using vmocap data(.trc)
+## make SMPL motions using vmocap data(.trc) (step2)
 vmocapdata (.trc) is in `./exp/trc/exapmle.trc`   
-SMPL data is in `./exp/objdata/example.obj`
+SMPL data is in `./exp/objdata/example.obj`   
+run with **python3** 
 ```
 $exp
 {yourblenderpass} --python makeanim.py -- example.obj -- {start frame number} -- {frame range number}
