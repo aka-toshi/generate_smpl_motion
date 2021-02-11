@@ -5,6 +5,9 @@
 - 実際の動画
 ![demoless](https://user-images.githubusercontent.com/44262677/83038767-4dccab80-a078-11ea-9daf-082ead3c902e.gif)
 
+## version
+	blender 2.80
+
 ## ファイル構造について
 - . &nbsp; ：[HMR](https://github.com/akanazawa/hmr)関連のファイルが入っている（詳しくはREADME2.md）
 - /exp：オリジナルファイルが入っている
