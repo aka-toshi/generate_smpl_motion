@@ -1,3 +1,6 @@
 /models/model.ckpt-667589.data-00000-of-00001
 /additionaldata/
 /exp/trc/memo.txt
+
+/__pycache__/
+*/__pycache__/
